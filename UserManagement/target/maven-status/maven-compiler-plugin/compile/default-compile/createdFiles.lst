@@ -1,0 +1,9 @@
+Dao\ActivityDAO.class
+com\mycompany\usermanagement\JAXRSConfiguration.class
+Model\User.class
+Dao\UserDAO.class
+com\mycompany\usermanagement\resources\JavaEE8Resource.class
+Model\Activity.class
+Utility\EmailUtility$1.class
+Controller\ControllerServlet.class
+Utility\EmailUtility.class

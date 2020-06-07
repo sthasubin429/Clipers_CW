@@ -1,0 +1,5 @@
+UserDAOTest\EditUserTest.class
+UserDAOTest\CreateUserTest.class
+UserDAOTest\DeleteUserTest.class
+UserDAOTest\LoginTest.class
+UserDAOTest\ChangePasswordTest.class
