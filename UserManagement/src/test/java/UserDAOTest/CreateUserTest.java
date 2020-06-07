@@ -45,6 +45,7 @@ public class CreateUserTest {
     
     @After
     public void tearDown() {
+        //deletes the created user
 
         try {
             userDAO.deleteUser(userDAO.getUserbyUsername("createusertest").getUser_id());
@@ -63,6 +64,7 @@ public class CreateUserTest {
         
             
         try {
+            //Sets values for new users
             String full_name = "Test User";
             String username = "createusertest";
             String user_email = "createuser@gmail.com";
@@ -70,11 +72,12 @@ public class CreateUserTest {
             String created_date = "2020-06-07";
             User testUser = new User(full_name, username, user_email, user_password, created_date);
             
+            //creates new user
             userDAO.createUser(testUser);
                 
             User user = userDAO.getUserbyUsername("createusertest");
             
-            
+            //checks the created user has correct values
             assertEquals(user.getUsername(), "createusertest");
             assertEquals(user.getFull_name(), "Test User");
             assertEquals(user.getUser_email(), "createuser@gmail.com");

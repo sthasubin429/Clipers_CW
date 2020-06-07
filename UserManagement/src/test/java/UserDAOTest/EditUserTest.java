@@ -37,6 +37,7 @@ public class EditUserTest {
     
     @Before
     public void setUp() {
+        //Creates a new user in the database for testing
         try {
             String full_name = "Test User";
             String username = "editUserTest";
@@ -53,6 +54,7 @@ public class EditUserTest {
     
     @After
     public void tearDown() {
+        //Deletes the user created after the test is completed
         try {
             userDAO.deleteUser(userDAO.getUserbyUsername("newUsername").getUser_id());
         } catch (ClassNotFoundException | SQLException ex) {
@@ -74,6 +76,7 @@ public class EditUserTest {
             
             User user = userDAO.getUserbyUsername("editUserTest");
             
+            //checks if the created user has correct values
             assertEquals(user.getUsername(), "editUserTest");
             assertEquals(user.getFull_name(), "Test User");
             assertEquals(user.getUser_email(), "editUserTest@gmail.com");
@@ -84,12 +87,17 @@ public class EditUserTest {
             assertFalse(user.getUsername().equals("Wrong user name"));
             assertFalse(user.getUser_email().equals("wrongemail@gmail.com"));
             
+            
+            //set values to be edited
             user.setUser_email("newemail@gmail.com");
             user.setUsername("newUsername");
             user.setFull_name("New Full Name");
             
+            //edites the user in datase
             userDAO.updateUser(user);
             
+            
+            //checks if the update was sucessful or not
             assertEquals(user.getUsername(), "newUsername");
             assertEquals(user.getFull_name(), "New Full Name");
             assertEquals(user.getUser_email(), "newemail@gmail.com");

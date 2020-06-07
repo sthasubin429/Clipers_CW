@@ -24,6 +24,21 @@ import javax.mail.internet.MimeMessage;
  * @author Subin
  */
 public class EmailUtility {
+    
+    /**
+     * 
+     * @param host
+     * @param port
+     * @param senderEmail
+     * @param senderName
+     * @param password
+     * @param recipientEmail
+     * @param subject
+     * @param message
+     * @throws AddressException
+     * @throws MessagingException
+     * @throws UnsupportedEncodingException 
+     */
     public static void sendEmail(String host, String port,
             final String senderEmail, String senderName, final String password,
             String recipientEmail, String subject, String message) throws AddressException,

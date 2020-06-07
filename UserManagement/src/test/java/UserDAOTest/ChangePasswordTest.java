@@ -37,6 +37,7 @@ public class ChangePasswordTest {
     
     @Before
     public void setUp() {
+        //creates new user for testing
 
         try {
             String full_name = "Test User";
@@ -55,7 +56,7 @@ public class ChangePasswordTest {
     
     @After
     public void tearDown() {
-
+        //deletes the user after testing
         try {
             userDAO.deleteUser(userDAO.getUserbyUsername("changePasswordTest").getUser_id());
         } catch (ClassNotFoundException | SQLException ex) {
@@ -72,15 +73,18 @@ public class ChangePasswordTest {
     @Test
     public void changePassword(){
         try {
+            //gets user from databse
             User user = userDAO.getUserbyUsername("changePasswordTest");
             
+            //checks if the user password with old credentials
             assertEquals(userDAO.getPassword(user.getUser_id()), "oldpassword123");            
             assertFalse(userDAO.getPassword(user.getUser_id()).equals("wrongpassword123"));
             
-
+            //changes the user password
             user.setUser_password("newpass123456");
             userDAO.changePassword(user);
             
+            //checks it the user has new password
             assertEquals(userDAO.getPassword(user.getUser_id()), "newpass123456");
             assertFalse(userDAO.getPassword(user.getUser_id()).equals("oldpassword123"));
             

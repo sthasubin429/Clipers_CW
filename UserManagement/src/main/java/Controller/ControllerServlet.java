@@ -119,6 +119,10 @@ public class ControllerServlet extends HttpServlet {
             throws ServletException, IOException {
          String action = request.getServletPath();
         System.out.println(action);
+        
+        /*
+            Switch cases checks for the url path and calls the correspoding function
+        */        
         switch (action) {
             
             case "/":
@@ -328,32 +332,79 @@ public class ControllerServlet extends HttpServlet {
 
     
     
-    
+    //Renders landing page
+    /**
+     * 
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException 
+     */
     private void index(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
         RequestDispatcher dispatcher = request.getRequestDispatcher("index_new.jsp");
         dispatcher.forward(request, response);
     
     }
     
+    
+    //Reders page not found page if the given url does not match
+    /**
+     * 
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException 
+     */
     private void notFound(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
         RequestDispatcher dispatcher = request.getRequestDispatcher("pagenotfound.jsp");
         dispatcher.forward(request, response);
-    
     }
 
-    
+    /**
+     * 
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException 
+     */
+    // Renders access denied page if the uesr try to acess resourses that are restricted
     private void accessdenied(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
         RequestDispatcher dispatcher = request.getRequestDispatcher("accessdenied.jsp");
         dispatcher.forward(request, response);
     
     }
     
+    
+    //Renders server error page if any error occurs in the server
+    /**
+     * 
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException 
+     */
     private void serverError(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
         RequestDispatcher dispatcher = request.getRequestDispatcher("servererror.jsp");
         dispatcher.forward(request, response);
     
     }
     
+    
+    
+    /**
+     *Renders Admin Dashboard
+     * Checks the user is logged in or not. Redirects to sign in page if not logged in
+     * Checks if the  user is logged in user is admin or not. Redirects to access denied page if not admin
+     */
+    /**
+     * 
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     * @throws ClassNotFoundException
+     * @throws SQLException 
+     */
     private void dashboard(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ClassNotFoundException, SQLException{
         HttpSession session = request.getSession();
         
@@ -381,6 +432,22 @@ public class ControllerServlet extends HttpServlet {
     }
     
     
+    
+    /**
+     *Renders user Profile
+     * Allows admin to view profile of other users as well
+     *If the user is not admin, Allows to view the page only if the logged in user and requested user profile are of same user.
+     * Redirects to access denied page otherwise
+     */
+    /**
+     * 
+     * @param request
+     * @param response
+     * @throws ClassNotFoundException
+     * @throws SQLException
+     * @throws ServletException
+     * @throws IOException 
+     */
     private void users(HttpServletRequest request, HttpServletResponse response) throws ClassNotFoundException, SQLException, ServletException, IOException{
         HttpSession session = request.getSession();
         
@@ -407,6 +474,21 @@ public class ControllerServlet extends HttpServlet {
         }
         
     }
+    
+    
+    /**
+     *Renders create user page
+     * Only allows access to admin
+     */
+    /**
+     * 
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     * @throws SQLException
+     * @throws ClassNotFoundException 
+     */
     private void createUser(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException, ClassNotFoundException{
         HttpSession session = request.getSession();
         
@@ -435,6 +517,25 @@ public class ControllerServlet extends HttpServlet {
     
     }
     
+    
+    
+    /**
+     * This function is called after the form in create user page is submitted
+     *Action function of the create user page.
+     * Checks if the email is not empty, password is of required length, passwords match, username and email is unique
+     * Hashes the password and calls the function to store new user into the databse
+     */
+    /**
+     * 
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     * @throws SQLException
+     * @throws ClassNotFoundException
+     * @throws UnsupportedEncodingException
+     * @throws NoSuchAlgorithmException 
+     */
     private void createUserAdmin(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException, ClassNotFoundException, UnsupportedEncodingException, NoSuchAlgorithmException{
           HttpSession session = request.getSession();
         
@@ -515,6 +616,19 @@ public class ControllerServlet extends HttpServlet {
     
     }
     
+    /**
+     *Renders Sign up page for clients
+     * Checks if any user is currently logged in or not, redirects to current user's profile if true
+     */
+    /**
+     * 
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     * @throws ClassNotFoundException
+     * @throws SQLException 
+     */
     private void signup(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ClassNotFoundException, SQLException {
         HttpSession session = request.getSession();
         if(session.getAttribute("user") != null){
@@ -530,6 +644,21 @@ public class ControllerServlet extends HttpServlet {
         
     }
     
+    /**
+     * 
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     * @throws ClassNotFoundException
+     * @throws SQLException
+     * @throws NoSuchAlgorithmException 
+     * 
+     * Function called after form in signup page is submitted
+     * Checks if the email is not blank, password is of appropriate length, passwords match and the email and username is unique.
+     * Renders the same sign in page with appropriate message if the above conditions are not met
+     * Else calls the function to store new users into the database
+     */
     private void register(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ClassNotFoundException, SQLException, NoSuchAlgorithmException {
         
           String fullName = request.getParameter("fullName");
@@ -609,7 +738,18 @@ public class ControllerServlet extends HttpServlet {
     }
     
     
-    
+    /**
+     * 
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     * @throws ClassNotFoundException
+     * @throws SQLException 
+     *  Renders the sign in page
+     * Checks if the any user is currently logged in or not.
+     * If any user is logged in redirects to current user's profile
+     */
     private void signin(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ClassNotFoundException, SQLException {
         HttpSession session = request.getSession();
         if(session.getAttribute("user") != null){
@@ -622,9 +762,27 @@ public class ControllerServlet extends HttpServlet {
             RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
             dispatcher.forward(request, response);
         }
-        
-
     }
+    
+    
+    /**
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     * @throws UnsupportedEncodingException
+     * @throws NoSuchAlgorithmException
+     * @throws ClassNotFoundException
+     * @throws SQLException 
+     * 
+     * Function called after form in sign in page is submitted
+     * Checks the email is a valid email, password submitted matches the password in the database.
+     * Renders sign in page with appropriate message if the above conditions are not met
+     * Else creates the session with the given usrname
+     * If the user is admin renders dashboard 
+     * if the user is client renders user profile
+     * 
+     */
     private void login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, UnsupportedEncodingException, NoSuchAlgorithmException, ClassNotFoundException, SQLException {
         String email = request.getParameter("signin_email");
         String password = request.getParameter("signin_password");
@@ -668,6 +826,21 @@ public class ControllerServlet extends HttpServlet {
         
     }
     
+    
+    /**
+     * Renders user profile for user
+     * Allows access to admin
+     * if user is not logged in redirects to sign in page
+     * if the logged in user and requested user profile is not same redirects to access denied page
+     * 
+     * 
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     * @throws ClassNotFoundException
+     * @throws SQLException 
+     */
     private void view(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ClassNotFoundException, SQLException{
         int id = Integer.parseInt(request.getParameter("id"));
         HttpSession session = request.getSession();
@@ -696,6 +869,17 @@ public class ControllerServlet extends HttpServlet {
         
     }
     
+    
+    /**
+     * Renders form to edit user details
+     * Redirects to sign in page if the user is not signned in,
+     * 
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     * @throws NullPointerException 
+     */
     private void edit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, NullPointerException{
         int id = Integer.parseInt(request.getParameter("id"));
         HttpSession session = request.getSession();
@@ -719,6 +903,21 @@ public class ControllerServlet extends HttpServlet {
     
     }
     
+    
+    /**
+     * Function called after form in edit page is submitted
+     * Renders the same page with appropriate message if the username is empty, email and username are not unique
+     * Else Updates the users name, email and username into the database
+     * 
+     * 
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     * @throws NullPointerException
+     * @throws ClassNotFoundException
+     * @throws SQLException 
+     */
     private void editUser(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, NullPointerException, ClassNotFoundException, SQLException{
         HttpSession session = request.getSession();
         String id = request.getParameter("edit_id");
@@ -779,6 +978,14 @@ public class ControllerServlet extends HttpServlet {
     
     }
     
+    /**
+     * Invalidates the current session and Redirects to sign in page
+     *
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException 
+     */
      private void logout(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
         Cookie[] cookies = request.getCookies();
     	if(cookies != null){
@@ -800,6 +1007,19 @@ public class ControllerServlet extends HttpServlet {
         }
     }
      
+     /**
+      * Deletes the user from the database and logs out user
+      * Redirects to sign in page if the user is ont logged in 
+      * Redirects to page not found if the id in the url does not exist in the database
+      * Redirects to access denied if the user is not admin or the currently logged in user and the profile to be deleted are not same
+      * 
+      * @param request
+      * @param response
+      * @throws ServletException
+      * @throws IOException
+      * @throws ClassNotFoundException
+      * @throws SQLException 
+      */
      private void delete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ClassNotFoundException, SQLException{
         int id = Integer.parseInt(request.getParameter("id"));
         HttpSession session = request.getSession();
@@ -834,6 +1054,21 @@ public class ControllerServlet extends HttpServlet {
     
     }
      
+     
+     /**
+      * Renders Change password form 
+      * If the user is not logged in redirects to sign in page
+      * Redirects to access denied page it the logged in user is not admin 
+      * and user whose password to be changed is not as same as the logged in user
+      * 
+      * @param request
+      * @param response
+      * @throws ServletException
+      * @throws IOException
+      * @throws ClassNotFoundException
+      * @throws SQLException 
+      */
+     
      private void changepassword(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ClassNotFoundException, SQLException{
         int id = Integer.parseInt(request.getParameter("id"));
         HttpSession session = request.getSession();
@@ -866,6 +1101,21 @@ public class ControllerServlet extends HttpServlet {
         
     }
      
+     /**
+      * Function called after form in change password is submitted
+      * Hashes the password and Updates the password in database
+      * Checks if the password is of appropriate length, passwords match both old password and confirm password
+      * Renders same page with appropriate message if the conditions are not met
+      * 
+      * @param request
+      * @param response
+      * @throws ServletException
+      * @throws IOException
+      * @throws ClassNotFoundException
+      * @throws SQLException
+      * @throws UnsupportedEncodingException
+      * @throws NoSuchAlgorithmException 
+      */
      private void changePasswordSubmit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ClassNotFoundException, SQLException, UnsupportedEncodingException, NoSuchAlgorithmException{
        
         HttpSession session = request.getSession();
@@ -943,6 +1193,19 @@ public class ControllerServlet extends HttpServlet {
         
     }
      
+     /**
+      * Renders Activity log of all the users 
+      * Redirects to sign in page if no user is logged in.
+      * Redirects to access denied page if the logged in user is not admin.
+      * 
+      * 
+      * @param request
+      * @param response
+      * @throws ServletException
+      * @throws IOException
+      * @throws SQLException
+      * @throws ClassNotFoundException 
+      */
       private void activitylog(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException, ClassNotFoundException{
         HttpSession session = request.getSession();
         
@@ -970,6 +1233,17 @@ public class ControllerServlet extends HttpServlet {
     
     }
       
+      /**
+       * Renders Page to forget password page
+       * Redirects to user profile if user is already logged in
+       * @param request
+       * @param response
+       * @throws ServletException
+       * @throws IOException
+       * @throws ClassNotFoundException
+       * @throws SQLException
+       * @throws SQLException 
+       */
       private void forgotPassword(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ClassNotFoundException, SQLException, SQLException{
         HttpSession session = request.getSession();
         if(session.getAttribute("user") != null){
@@ -990,6 +1264,25 @@ public class ControllerServlet extends HttpServlet {
     
     }
       
+      
+      /**
+       * Function called after form in forgot password is submitted.
+       * Checks if the email is valid
+       * Renders same page with appropriate message if the email address does not exist in the databse
+       * Else gets the email entered, generates a random password,
+       * Hashes the random password and updates it in the database 
+       * and sends the random password to user via email
+       * 
+       * 
+       * @param request
+       * @param response
+       * @throws UnsupportedEncodingException
+       * @throws NoSuchAlgorithmException
+       * @throws ClassNotFoundException
+       * @throws SQLException
+       * @throws ServletException
+       * @throws IOException 
+       */
       private void resetPassword(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException, NoSuchAlgorithmException, ClassNotFoundException, SQLException, ServletException, IOException{
           String recipient = request.getParameter("reset_email");   
           
@@ -1046,6 +1339,16 @@ public class ControllerServlet extends HttpServlet {
 
     //Utility MEthods
       
+    /**
+     * utility function that inserts activity log into the data base
+     * formats date and time and stores the activity one into the databse
+     * 
+     * @param activityName
+     * @param username
+     * @throws SQLException
+     * @throws ClassNotFoundException 
+     */
+      
     private void insertActivity(String activityName, String username) throws SQLException, ClassNotFoundException{
         Date date = Calendar.getInstance().getTime();  
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");  
@@ -1058,6 +1361,16 @@ public class ControllerServlet extends HttpServlet {
        
     
     }  
+    
+    
+    /**
+     * Function to encrypt passoword using SHA-1 hash
+     * 
+     * @param password
+     * @return
+     * @throws UnsupportedEncodingException
+     * @throws NoSuchAlgorithmException 
+     */
     private static String encryptPassword(String password) throws UnsupportedEncodingException, NoSuchAlgorithmException{
         String sha1 = "";
             MessageDigest crypt = MessageDigest.getInstance("SHA-1");

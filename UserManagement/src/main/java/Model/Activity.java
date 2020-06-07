@@ -9,6 +9,7 @@ package Model;
  *
  * @author Subin
  */
+
 public class Activity {
     String activity;
     String date;

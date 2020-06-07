@@ -23,10 +23,24 @@ import java.util.logging.Logger;
 /**
  *
  * @author Subin
+ * 
+ * 
+ * Contains all the database query with the activity table
  */
 public class ActivityDAO {
     private Connection con;
     
+   /*
+    Parameters: None
+    Return Value: Void
+    Establishes Connection with database
+    
+    */ 
+    /**
+     * 
+     * @throws ClassNotFoundException
+     * @throws SQLException 
+     */
     public void connect() throws ClassNotFoundException, SQLException{
         
         try {
@@ -46,11 +60,23 @@ public class ActivityDAO {
         }
     }
     
+    
+    /*
+    Parameters:None
+    Return Value:List of objects of Activity type
+    Queries the database and returns all hte activites in decending order by date and time
+    */
+    /**
+     * 
+     * @return
+     * @throws ClassNotFoundException
+     * @throws SQLException 
+     */
     public List<Activity> getAllActivity() throws ClassNotFoundException, SQLException{
         List<Activity> activityList = new ArrayList<>();
         connect();
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("select * from activitylog Order by date DESC");
+            ResultSet rs = stmt.executeQuery("select * from activitylog Order by date,time DESC");
             
             while (rs.next()) {
                 String act = rs.getString("activity");
@@ -68,6 +94,17 @@ public class ActivityDAO {
         return activityList;
     }
     
+    /*
+    Parameters:Object of Activity type
+    Return Value:None
+    Queries the database and inserts a new activity into the database
+    */
+    /**
+     * 
+     * @param activity
+     * @throws SQLException
+     * @throws ClassNotFoundException 
+     */
     public void insertActivity(Activity activity) throws SQLException, ClassNotFoundException{
         connect();
         String sql = "INSERT INTO activitylog (activity, date, time, username) VALUES (?, ?, ?, ?)";
@@ -84,10 +121,23 @@ public class ActivityDAO {
         this.con.close();
     }
     
+    
+    /*
+    Parameters:String as current_username
+    Return Value:List of object of activity type
+    Queries the database and returns the activites of the given user in decending order by date and time
+    */
+    /**
+     * 
+     * @param current_username
+     * @return
+     * @throws ClassNotFoundException
+     * @throws SQLException 
+     */
     public List<Activity> getActivityByUsername(String current_username) throws ClassNotFoundException, SQLException{        
         
         List<Activity> activityList = new ArrayList<>();
-        String sql = "SELECT * FROM `activitylog` WHERE username = ? ORDER BY date DESC";
+        String sql = "SELECT * FROM `activitylog` WHERE username = ? ORDER BY date,time DESC";
         connect();
         
         PreparedStatement statement = this.con.prepareStatement(sql);
@@ -114,24 +164,6 @@ public class ActivityDAO {
             rs.close();
             this.con.close();
         return activityList;
-    }
-    
-    public static void main(String [] args){
-        ActivityDAO obj = new ActivityDAO();
-        try {
-            obj.getAllActivity();
-            
-        } catch (ClassNotFoundException | SQLException ex) {
-            Logger.getLogger(ActivityDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try {
-            obj.getActivityByUsername("sandip1");
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(ActivityDAO.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(ActivityDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
     }
     
 }

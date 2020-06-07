@@ -21,10 +21,26 @@ import java.util.logging.Logger;
 /**
  *
  * @author Subin
+ * 
+ * 
+ * 
+ * Contains all the queries with users table of the database
  */
 public class UserDAO {
     private Connection con;
     
+    
+    /*
+    Parameters: None
+    Return Value: Void
+    Establishes Connection with database
+    
+    */
+    /**
+     * 
+     * @throws ClassNotFoundException
+     * @throws SQLException 
+     */
     public void connect() throws ClassNotFoundException, SQLException{
         
         try {
@@ -44,7 +60,19 @@ public class UserDAO {
         }
     }
     
-    
+    /*
+    Parameters:None
+    Return Value: List of objects of Model Class User.
+    Queries the data base and selects all the rows.
+    Makes all the selected rows into the objects of Model class User.
+    Returns the list of Model Class
+    */
+    /**
+     * 
+     * @return
+     * @throws ClassNotFoundException
+     * @throws SQLException 
+     */
     public List<User> select_all() throws ClassNotFoundException, SQLException{
         List<User> listUser = new ArrayList<>();
         connect();
@@ -69,6 +97,22 @@ public class UserDAO {
         return listUser;
     }
     
+    
+    /*
+    Parameters:Object of User Type
+    Return Value:Void
+    Takes in the object of User type. 
+    Gets all the required values from the User objects.
+    Gets the max user id from the database, adds one to it and makes it the new user id.
+    Queries the database and inserts the new user into the database.
+    Sets default value of user role as client.
+    */
+    /**
+     * 
+     * @param newUser
+     * @throws ClassNotFoundException
+     * @throws SQLException 
+     */
     public void createUser(User newUser) throws ClassNotFoundException, SQLException{
         connect();
         String sql = "INSERT INTO users (user_id, full_name, username, user_email, user_password, created_date) VALUES (?, ?, ?, ?, ?, ?)";
@@ -92,6 +136,22 @@ public class UserDAO {
         this.con.close();
     }
     
+    
+    /*
+    Parameters:Object of User Type
+    Return Value:Void
+    Takes in the object of User type. 
+    Gets all the required values from the User objects.
+    Gets the max user id from the database, adds one to it and makes it the new user id.
+    Queries the database and inserts the new user into the database.
+    Sets value of user role as admin or user depending upon the paramerter
+    */
+    /**
+     * 
+     * @param newUser
+     * @throws ClassNotFoundException
+     * @throws SQLException 
+     */
     public void createUserAdmin(User newUser) throws ClassNotFoundException, SQLException{
         connect();
         String sql = "INSERT INTO users (user_id, full_name, username, user_email, user_password, created_date, user_role) VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -116,6 +176,20 @@ public class UserDAO {
         this.con.close();
     }
     
+    /*
+    Parameters: two Strings, one as email and other as passwrod
+    Return Value: Boolean
+    Queries the database and gets the user that matches the input email.
+    Checks if the password associated with the given email in the database matches the password in the input
+    Returns true if the passwords match and false otherwise.
+    */
+    /** 
+     *@param email
+     * @param password
+     * @return
+     * @throws ClassNotFoundException
+     * @throws SQLException 
+     */
     public boolean authenticate(String email, String password) throws ClassNotFoundException, SQLException{
         
         String sql = "SELECT user_email, user_password FROM `users` WHERE user_email = ? ";
@@ -139,9 +213,18 @@ public class UserDAO {
         
     }
     
+    /*
+    Parameters:Object of User Type
+    Return Value: Boolean
+    Queries the database and updates full name, username and email as per the parameter.
+    Returns true if the query runs sucessfully and false otherwise
+    */
+    /**
+     * 
+     * @param userUpdate
+     * @return 
+     */
     public boolean updateUser(User userUpdate){
-
-        
         try {
             connect();
             String sql = "UPDATE users SET full_name = ?, username = ?, user_email = ? WHERE user_id = ? ";
@@ -163,6 +246,15 @@ public class UserDAO {
        
     }
     
+    /*
+    Parameters:integer
+    Return Value:void
+    queries the database and deletes the row associated with the given id
+    */
+    /**
+     * 
+     * @param id 
+     */
     public void deleteUser(int id){
         try {
             User user = null;
@@ -177,7 +269,20 @@ public class UserDAO {
         }
     }
     
-    
+    /*
+    Parameters:String
+    Return Value:boolean
+    Uses the predefied select all method to get all the users in the databse.
+    loops through all the users and checks if the email already exists in the database.
+    Returns true if found and false otherwise.
+    */
+    /**
+     * 
+     * @param email
+     * @return
+     * @throws ClassNotFoundException
+     * @throws SQLException 
+     */
     public boolean checkEmail(String email) throws ClassNotFoundException, SQLException{
         UserDAO obj = new UserDAO();
         List<User> userlist = obj.select_all();
@@ -192,6 +297,20 @@ public class UserDAO {
         return found != 0;
     }
     
+    /*
+    Parameters:String
+    Return Value:boolean
+    Uses the predefied select all method to get all the users in the databse.
+    loops through all the users and checks if the username already exists in the database.
+    Returns true if found and false otherwise.
+    */
+    /**
+     * 
+     * @param username
+     * @return
+     * @throws ClassNotFoundException
+     * @throws SQLException 
+     */
     public boolean checkUsername(String username) throws ClassNotFoundException, SQLException{
         UserDAO obj = new UserDAO();
         List<User> userlist = obj.select_all();
@@ -206,6 +325,20 @@ public class UserDAO {
         return found != 0;
     }
     
+    /*
+    Parameters:integer as id and String as email
+    Return Value:boolean
+    Queries the database and selects all the users except the given email
+    Returns true if found and false otherwise
+    */
+    /**
+     * 
+     * @param id
+     * @param email
+     * @return
+     * @throws ClassNotFoundException
+     * @throws SQLException 
+     */
     public boolean editCheckEmail(int id, String email) throws ClassNotFoundException, SQLException{
         connect();
         String sql = "SELECT user_email FROM `users` WHERE user_id not in (?)";
@@ -227,6 +360,20 @@ public class UserDAO {
         return false;
     }
     
+    /*
+    Parameters:integer as id and String as username
+    Return Value:boolean
+    Queries the database and selects all the users except the given username
+    Returns true if found and false otherwise
+    */
+    /**
+     * 
+     * @param id
+     * @param username
+     * @return
+     * @throws ClassNotFoundException
+     * @throws SQLException 
+     */
     public boolean editCheckUsername(int id, String username) throws ClassNotFoundException, SQLException{
         connect();
         String sql = "SELECT username FROM `users` WHERE user_id not in (?)";
@@ -249,7 +396,18 @@ public class UserDAO {
     }
     
 
-    
+    /*
+    Parameters:integer as id
+    Return Value: object of user type
+    queries the database and returs the user associated with the gived userid
+    */
+    /**
+     * 
+     * @param id
+     * @return
+     * @throws ClassNotFoundException
+     * @throws SQLException 
+     */
     public User getUserbyID(int id) throws ClassNotFoundException, SQLException{
         User user = null;
         String sql = "SELECT * FROM users WHERE user_id = ?";
@@ -279,7 +437,18 @@ public class UserDAO {
         return user;
     
     }
-    
+    /*
+    Parameters:String as email
+    Return Value: object of user type
+    queries the database and returs the user associated with the gived email
+    */
+    /**
+     * 
+     * @param email
+     * @return
+     * @throws ClassNotFoundException
+     * @throws SQLException 
+     */
     public User getUserbyEmail(String email) throws ClassNotFoundException, SQLException{
         User user = null;
         String sql = "SELECT * FROM users WHERE user_email = ?";
@@ -311,7 +480,18 @@ public class UserDAO {
     }
     
 
-    
+    /*
+    Parameters:String as email
+    Return Value: object of user type
+    queries the database and returs the user associated with the gived email
+    */
+    /**
+     * 
+     * @param Username
+     * @return
+     * @throws ClassNotFoundException
+     * @throws SQLException 
+     */
     public User getUserbyUsername(String Username) throws ClassNotFoundException, SQLException{
         User user = null;
         String sql = "SELECT * FROM users WHERE username = ?";
@@ -343,6 +523,18 @@ public class UserDAO {
     
     }
     
+    /*
+    Parameters:String as username
+    Return Value:boolean
+    checks weather user with the given username is admine or not
+    */
+    /**
+     * 
+     * @param Username
+     * @return
+     * @throws ClassNotFoundException
+     * @throws SQLException 
+     */
     public boolean checkAdmin(String Username) throws ClassNotFoundException, SQLException{
         User user = null;
         
@@ -351,6 +543,18 @@ public class UserDAO {
         
     }
     
+    /*
+    Parameters:String as email
+    Return Value:boolean
+    Checks weather user with the given email is admin or not
+    */
+    /**
+     * 
+     * @param email
+     * @return
+     * @throws ClassNotFoundException
+     * @throws SQLException 
+     */
     public boolean checkAdminbyEmail(String email) throws ClassNotFoundException, SQLException{
         User user = null;
         
@@ -359,6 +563,20 @@ public class UserDAO {
     
     }
     
+    
+    /*
+    Parameters:int as id
+    Return Value:String
+    Queries the database and selects the user associated with the given id
+    returns the passoword of the user
+    */
+    /**
+     * 
+     * @param id
+     * @return
+     * @throws ClassNotFoundException
+     * @throws SQLException 
+     */
     public String getPassword(int id) throws ClassNotFoundException, SQLException{
         String sql = "SELECT user_password FROM users WHERE user_id = ?";
         String password = null;
@@ -384,6 +602,19 @@ public class UserDAO {
         return password;
     }
     
+    /*
+    Parameters:Object of user Type
+    Return Value:boolean
+    Queries the database and updates the password of the given user
+    returns true if sucessful.
+    */
+    /**
+     * 
+     * @param userPasswordChange
+     * @return
+     * @throws ClassNotFoundException
+     * @throws SQLException 
+     */
     public boolean changePassword(User userPasswordChange) throws ClassNotFoundException, SQLException{
         
     try {
@@ -405,23 +636,4 @@ public class UserDAO {
         }
     }
     
-    
-//    
-//        public static void main(String [] args) throws ClassNotFoundException, SQLException{
-//        UserDAO obj = new UserDAO();
-//        List<User> userlist = obj.select_all();
-//        
-//        for(User user : userlist) {
-//            System.out.println(user.getUser_id());
-//            System.out.println(user.getFull_name());
-//            System.out.println(user.getUsername());
-//            System.out.println(user.getUser_email());
-//            System.out.println(user.getUser_status());
-//            System.out.println(user.getUser_password());
-//            
-//        }
-//        obj.authenticate("subin@gmail.com", "subin");
-//        
-//
-//    }
 }

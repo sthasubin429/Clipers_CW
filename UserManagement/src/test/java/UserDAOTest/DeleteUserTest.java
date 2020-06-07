@@ -36,6 +36,7 @@ public class DeleteUserTest {
     
     @Before
     public void setUp() {
+        //Creates new user for testing
         try {
             String full_name = "Test User";
             String username = "deleteTestUser";
@@ -64,14 +65,15 @@ public class DeleteUserTest {
     public void deleteUser(){
         try {
             
-            
+            //checks if the user exists in the database
             assertTrue(userDAO.checkEmail("deletetestuser@gmail.com"));
             assertTrue(userDAO.checkUsername("deleteTestUser"));
             assertTrue(userDAO.authenticate("deletetestuser@gmail.com", "tuser1234"));
             
+            //deletes the user from the database
             userDAO.deleteUser(userDAO.getUserbyUsername("deleteTestUser").getUser_id());
             
-            
+            //checks if the user still exists in the datase
             assertFalse(userDAO.checkEmail("deleteTestUser"));
             assertFalse(userDAO.checkUsername("deletetestuser@gmail.com"));
             

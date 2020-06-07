@@ -41,6 +41,7 @@ public class LoginTest {
     
     @Before
     public void setUp() {
+        //Set up Creates a new user in the database for the test
         try {
             String full_name = "Login User";
             String username = "loginUserTest";
@@ -57,6 +58,7 @@ public class LoginTest {
     
     @After
     public void tearDown() {
+        //delets the created user after the test is completed
         try {
             userDAO.deleteUser(userDAO.getUserbyUsername("loginUserTest").getUser_id());
         } catch (ClassNotFoundException | SQLException ex) {
