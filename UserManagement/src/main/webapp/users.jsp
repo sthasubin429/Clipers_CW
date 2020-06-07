@@ -73,7 +73,35 @@ input[type=text]:focus {
         <h2><b><i class="fa fa-users"></i> User List</b></h2>
         <div>
           <div style="float: left;width: 80%;">
-      </div>
+              <form action="/UserManagement/report">
+                <div class="row">
+                  <div class="col-25">
+                    <label for="">Start Date</label>
+                  </div>
+                  <div class="col-75">
+                    <input type="date" id="" name="startDate" placeholder="Start Date" required>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-25">
+                    <label for="">End Date</label>
+                  </div>
+                  <div class="col-75">
+                    <input type="date" id="" name="endDate" placeholder="End Date" required>
+                  </div>
+                </div>
+                <div class="row">
+                  <input type="submit" value="Generate Report">
+                </div>
+              </form>
+              <br>
+              
+            <form action="/UserManagement/search">
+                <div class="row">
+                    <input type="text" name="searchKey" placeholder="Search by Username or Name">
+                  </div>
+            </form>
+            </div>
       <div style="float: right;">
         <a href="/UserManagement/createuser" style="text-decoration:none;"><i class="fa fa-plus"></i>  <b>Add users</b></a>
       </div>

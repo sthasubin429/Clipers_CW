@@ -320,6 +320,30 @@ public class ControllerServlet extends HttpServlet {
                  }
              }
                 break;
+            case "/report":
+             {
+                 try {
+                     getReport(request,response);
+                 } catch (ClassNotFoundException | SQLException ex) {
+                     Logger.getLogger(ControllerServlet.class.getName()).log(Level.SEVERE, null, ex);
+                     response.sendRedirect("/UserManagement/servererror");
+                     
+                 }
+             }
+                break;
+            case "/search":
+             {
+                 try {
+                     getSearch(request,response);
+                 } catch (ClassNotFoundException | SQLException ex) {
+                     Logger.getLogger(ControllerServlet.class.getName()).log(Level.SEVERE, null, ex);
+                     response.sendRedirect("/UserManagement/servererror");
+                     
+                 }
+             }
+                break;
+
+                
             case "/servererror":
                 serverError(request,response);
                 break;
@@ -474,6 +498,98 @@ public class ControllerServlet extends HttpServlet {
         }
         
     }
+    
+    
+    /**
+     * Renders list of all user profiles with in the specified date range
+     * Function called after generate report function is called in user page
+     * Allows admin to view profile of other users as well
+     * If the user is not admin, Allows to view the page only if the logged in user and requested user profile are of same user.
+     * Redirects to access denied page otherwise
+     * 
+     * 
+     * @param request
+     * @param response
+     * @throws ClassNotFoundException
+     * @throws SQLException
+     * @throws ServletException
+     * @throws IOException 
+     */
+    private void getReport(HttpServletRequest request, HttpServletResponse response) throws ClassNotFoundException, SQLException, ServletException, IOException{
+        HttpSession session = request.getSession();
+        String startDate = request.getParameter("startDate");
+        String endDate = request.getParameter("endDate");
+        
+        
+        String userName = null;
+        Cookie[] cookies = request.getCookies();
+        if(cookies !=null){
+        for(Cookie cookie : cookies){
+                if(cookie.getName().equals("user")) userName = cookie.getValue();
+        }
+        }
+        if(session.getAttribute("user") == null){
+            response.sendRedirect("/UserManagement/signin");
+        }
+        else if (!this.userDAO.checkAdmin(userName)){
+            response.sendRedirect("/UserManagement/accessdenied");
+        }
+        
+        else{
+            List<User> listUser = this.userDAO.report(startDate, endDate);
+            request.setAttribute("listUser", listUser);
+            request.setAttribute("currentUser", userName);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("users.jsp");
+            dispatcher.forward(request, response);
+        }
+        
+    }
+    
+    /**
+     * Renders list of all user profiles that match the search key
+     * Function called after generate report function is called in user page
+     * Allows admin to view profile of other users as well
+     * If the user is not admin, Allows to view the page only if the logged in user and requested user profile are of same user.
+     * Redirects to access denied page otherwise
+     * 
+     * 
+     * @param request
+     * @param response
+     * @throws ClassNotFoundException
+     * @throws SQLException
+     * @throws ServletException
+     * @throws IOException 
+     */
+    private void getSearch(HttpServletRequest request, HttpServletResponse response) throws ClassNotFoundException, SQLException, ServletException, IOException{
+        HttpSession session = request.getSession();
+        String key = request.getParameter("searchKey");
+        
+        
+        String userName = null;
+        Cookie[] cookies = request.getCookies();
+        if(cookies !=null){
+        for(Cookie cookie : cookies){
+                if(cookie.getName().equals("user")) userName = cookie.getValue();
+        }
+        }
+        if(session.getAttribute("user") == null){
+            response.sendRedirect("/UserManagement/signin");
+        }
+        else if (!this.userDAO.checkAdmin(userName)){
+            response.sendRedirect("/UserManagement/accessdenied");
+        }
+        
+        else{
+            List<User> listUser = this.userDAO.search(key);
+            request.setAttribute("listUser", listUser);
+            request.setAttribute("currentUser", userName);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("users.jsp");
+            dispatcher.forward(request, response);
+        }
+        
+    }
+    
+    
     
     
     /**
@@ -1364,7 +1480,7 @@ public class ControllerServlet extends HttpServlet {
     
     
     /**
-     * Function to encrypt passoword using SHA-1 hash
+     * Function to encrypt password using SHA-1 hash
      * 
      * @param password
      * @return
