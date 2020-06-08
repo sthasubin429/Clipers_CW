@@ -227,7 +227,7 @@ public class ControllerServlet extends HttpServlet {
              {
                  try {
                      edit(request,response);
-                 } catch (NullPointerException ex) {
+                 } catch (NullPointerException | ClassNotFoundException | SQLException ex) {
                      Logger.getLogger(ControllerServlet.class.getName()).log(Level.SEVERE, null, ex);
                      response.sendRedirect("/UserManagement/servererror");
                  }
@@ -905,6 +905,9 @@ public class ControllerServlet extends HttpServlet {
         if(session.getAttribute("user") == null){
             response.sendRedirect("/UserManagement/signin");
         }
+        else if (!this.userDAO.checkID(id)){
+            response.sendRedirect("/UserManagement/pagenotfound");
+        }
         
         
         else{
@@ -929,7 +932,7 @@ public class ControllerServlet extends HttpServlet {
     
     /**
      * Renders form to edit user details
-     * Redirects to sign in page if the user is not signned in,
+     * Redirects to sign in page if the user is not sign in page,
      * 
      * @param request
      * @param response
@@ -937,24 +940,31 @@ public class ControllerServlet extends HttpServlet {
      * @throws IOException
      * @throws NullPointerException 
      */
-    private void edit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, NullPointerException{
+    private void edit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, NullPointerException, ClassNotFoundException, SQLException{
         int id = Integer.parseInt(request.getParameter("id"));
         HttpSession session = request.getSession();
         
         if(session.getAttribute("user") == null){
             response.sendRedirect("/UserManagement/signin");
         }
+        else if (!this.userDAO.checkID(id)){
+            response.sendRedirect("/UserManagement/pagenotfound");
+        }
         
         else{
-            try {
-                User user;
-                user = this.userDAO.getUserbyID(id);
+            User user;
+            user = this.userDAO.getUserbyID(id);
+            User current_user = this.userDAO.getUserbyUsername((String) session.getAttribute("user"));
+
+            if(session.getAttribute("user").equals(user.getUsername()) || current_user.getUser_role().equals("Admin")){
                 request.setAttribute("currentUser", user);
                 RequestDispatcher dispatcher = request.getRequestDispatcher("edit.jsp");
                 dispatcher.forward(request, response);
-            } catch (ClassNotFoundException | SQLException ex) {
-                Logger.getLogger(ControllerServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }                
+            else{
+                response.sendRedirect("/UserManagement/accessdenied");
             }
+                
         }
         
     
@@ -995,7 +1005,7 @@ public class ControllerServlet extends HttpServlet {
               request.setAttribute("currentUser", user);
               RequestDispatcher dispatcher = request.getRequestDispatcher("edit.jsp");
               dispatcher.forward(request, response);
-          }
+        }
           
           else if (this.userDAO.editCheckEmail(int_id, email)){
               request.setAttribute("errorMessage", "Email already in use, Please use different email");
@@ -1137,6 +1147,9 @@ public class ControllerServlet extends HttpServlet {
             response.sendRedirect("/UserManagement/signin");
         }
         
+        else if (!this.userDAO.checkID(id)){
+            response.sendRedirect("/UserManagement/pagenotfound");
+        }
         
         else{
             User user;

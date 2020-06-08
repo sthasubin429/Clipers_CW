@@ -14,7 +14,10 @@
 <style><%@include file="css/dashboard.css"%></style>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.datatbales.net/1.10.19/css/dataTables.bootstrap4.min.css">
 <style>
+
 html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 input[type=text] {
   width: 130px;
@@ -31,6 +34,11 @@ input[type=text] {
 
 input[type=text]:focus {
   width: 80%;}
+.dataTables_filter{
+  margin-left: 71%;}
+.center{
+  text-align: center;
+  }
 
 </style>
 <body class="w3-light-grey">
@@ -75,19 +83,31 @@ input[type=text]:focus {
       </div>
       </div>
     </header>
-      <div class="w3-container" style="max-height:750px; overflow: auto;">
-        <table class="w3-table-all w3-hoverable" >
+      <div class="container mb-3 mt-3">
+        <table class="table table-striped table-bordered mydatatable" style="width:100%" >
+            <thead>                
+                <tr>
+                <th>Username</th>
+                <th>Activity</th>
+                <th>Time</th>
+                <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
           <c:forEach var="act" items="${listActivity}">
                 <tr>
                     <td><c:out value="${act.username}" /></td>
                     <td><c:out value="${act.activity}" /></td>
-                    <td>At</td>
                     <td><c:out value="${act.time}" /></td>
-                    <td>On</td>
                     <td><c:out value="${act.date}" /></td>
 
                 </tr>
             </c:forEach>
+                
+            </tbody>
+            <tfoot>
+
+          </tfoot>
         </table>
       </div>
     <!-- Footer -->
@@ -122,6 +142,17 @@ function w3_close() {
   mySidebar.style.display = "none";
   overlayBg.style.display = "none";
 }
+</script>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+
+<script>
+    $('.mydatatable').DataTable();
 </script>
 
 </body>

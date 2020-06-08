@@ -325,6 +325,29 @@ public class UserDAO {
         return found != 0;
     }
     
+    /**
+     * Uses the predefined select all method to get all the users form the database.
+     * loops though all the users and checks if the username already exists in the database.
+     * returns true if found and false otherwise
+     * @param id
+     * @return
+     * @throws ClassNotFoundException
+     * @throws SQLException 
+     */
+    public boolean checkID(int id) throws ClassNotFoundException, SQLException{
+        UserDAO obj = new UserDAO();
+        List<User> userlist = obj.select_all();
+        int found = 0;
+        for(User user : userlist) {
+            if (id == user.getUser_id()){
+                found = 1;
+                break;
+            }
+        }      
+        
+        return found != 0;
+    }
+    
     /*
     Parameters:integer as id and String as email
     Return Value:boolean

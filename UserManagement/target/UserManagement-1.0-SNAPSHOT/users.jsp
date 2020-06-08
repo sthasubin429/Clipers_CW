@@ -109,11 +109,10 @@ input[type=text]:focus {
       </div>
       </div>
     </header>
-      <div class=""container mb-3 mt-3">
+      <div class="container mb-3 mt-3">
       
         <table class="table table-striped table-bordered mydatatable" style="width:100%">
           <thead>
-            <tr>
                 <tr>
                 <th>ID</th>
                 <th>Full Name</th>
@@ -123,6 +122,7 @@ input[type=text]:focus {
                 <th>Created Date</th>
                 <th>Role</th>
                 <th>Actions</th>
+                </tr>
           </thead>
           <tbody>
             <c:forEach var="user" items="${listUser}">
