@@ -122,16 +122,6 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
             <td><i>17 mins</i></td>
           </tr>
           <tr>
-            <td><i class="fa fa-comment w3-text-red w3-large"></i></td>
-            <td>New comments.</td>
-            <td><i>25 mins</i></td>
-          </tr>
-          <tr>
-            <td><i class="fa fa-bookmark w3-text-blue w3-large"></i></td>
-            <td>Check transactions.</td>
-            <td><i>28 mins</i></td>
-          </tr>
-          <tr>
             <td><i class="fa fa-laptop w3-text-red w3-large"></i></td>
             <td>CPU overload.</td>
             <td><i>35 mins</i></td>

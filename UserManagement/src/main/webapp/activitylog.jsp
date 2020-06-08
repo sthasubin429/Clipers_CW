@@ -35,10 +35,9 @@ input[type=text] {
 input[type=text]:focus {
   width: 80%;}
 .dataTables_filter{
-  margin-left: 71%;}
-.center{
-  text-align: center;
-  }
+    display:flex;
+    justify-content: flex-end;
+}
 
 </style>
 <body class="w3-light-grey">

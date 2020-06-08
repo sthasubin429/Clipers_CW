@@ -76,7 +76,7 @@ public class ActivityDAO {
         List<Activity> activityList = new ArrayList<>();
         connect();
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("select * from activitylog Order by date,time DESC");
+            ResultSet rs = stmt.executeQuery("select * from activitylog Order by date DESC");
             
             while (rs.next()) {
                 String act = rs.getString("activity");
@@ -137,7 +137,7 @@ public class ActivityDAO {
     public List<Activity> getActivityByUsername(String current_username) throws ClassNotFoundException, SQLException{        
         
         List<Activity> activityList = new ArrayList<>();
-        String sql = "SELECT * FROM `activitylog` WHERE username = ? ORDER BY date,time DESC";
+        String sql = "SELECT * FROM `activitylog` WHERE username = ? ORDER BY date DESC";
         connect();
         
         PreparedStatement statement = this.con.prepareStatement(sql);

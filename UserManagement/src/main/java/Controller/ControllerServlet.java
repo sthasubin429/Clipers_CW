@@ -993,6 +993,7 @@ public class ControllerServlet extends HttpServlet {
         String name = request.getParameter("edit_name");
         
         int int_id = Integer.parseInt(id);
+        User currentUser = this.userDAO.getUserbyUsername((String) session.getAttribute("user"));
         
         if(session.getAttribute("user") == null){
             response.sendRedirect("/UserManagement/signin");
@@ -1031,7 +1032,9 @@ public class ControllerServlet extends HttpServlet {
             
             
             if (this.userDAO.updateUser(userUpdate)){
-                session.setAttribute("user", userUpdate.getUsername());
+                if ( !currentUser.getUser_role().equals("Admin")){
+                    session.setAttribute("user", userUpdate.getUsername());  
+                }   
                 insertActivity("User Edited", userUpdate.getUsername());
                 response.sendRedirect("/UserManagement/view?id="+id);
             }
@@ -1428,8 +1431,6 @@ public class ControllerServlet extends HttpServlet {
         
         Activity activity = new Activity(activityName, current_date, current_time, username);
         this.activityDAO.insertActivity(activity);
-       
-    
     }  
     
     

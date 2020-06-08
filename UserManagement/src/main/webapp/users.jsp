@@ -34,11 +34,11 @@ input[type=text] {
 
 input[type=text]:focus {
   width: 80%;}
+
 .dataTables_filter{
-  margin-left: 71%;}
-.center{
-  text-align: center;
-  }
+    display:flex;
+    justify-content: flex-end;
+}
 
 </style>
 <body class="w3-light-grey">
@@ -81,25 +81,20 @@ input[type=text]:focus {
         <div>
           <div style="float: left;width: 80%;">
               <form action="/UserManagement/report">
-                <div class="row">
-                  <div class="col-25">
-                    <label for="">Start Date</label>
+                  <div style="display: flex;">
+                    <div style="display: flex; flex-direction: column; margin-left: 20px" >
+                        <label for="">Start Date</label>
+                        <input type="date" id="" name="startDate" placeholder="Start Date" required>
+                    </div>
+                    <div style="display: flex; flex-direction: column; margin-left: 20px">
+                        <label for="">End Date</label>
+                        <input type="date" id="" name="endDate" placeholder="End Date" required>
+                    </div>
+                    <div style="margin-left: 20px; margin-top: 12px">
+                        <input type="submit" value="Generate Report">
+                    </div>
                   </div>
-                  <div class="col-75">
-                    <input type="date" id="" name="startDate" placeholder="Start Date" required>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-25">
-                    <label for="">End Date</label>
-                  </div>
-                  <div class="col-75">
-                    <input type="date" id="" name="endDate" placeholder="End Date" required>
-                  </div>
-                </div>
-                <div class="row">
-                  <input type="submit" value="Generate Report">
-                </div>
+                
               </form>
               <br>
               
