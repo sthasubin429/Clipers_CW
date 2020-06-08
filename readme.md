@@ -1,7 +1,9 @@
 System Requirements:
+    
     Windows 7 or higher Preferiably Windows 10
 
 Tools:
+
     Programming Language- Java
     IDE- Netbeans IDE 11.2 (JDK 14.0.1) Default
     Server- GlassFish Server 5.1.0 (JDK-1.8.0_202)
@@ -9,6 +11,7 @@ Tools:
     Database server- XAMPP version 3.2.2
 
 Dependencies:
+    
     Name:javax
     artifactId:javaee-api
     Vesrsion:8.0
