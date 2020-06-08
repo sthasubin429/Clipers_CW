@@ -331,18 +331,6 @@ public class ControllerServlet extends HttpServlet {
                  }
              }
                 break;
-            case "/search":
-             {
-                 try {
-                     getSearch(request,response);
-                 } catch (ClassNotFoundException | SQLException ex) {
-                     Logger.getLogger(ControllerServlet.class.getName()).log(Level.SEVERE, null, ex);
-                     response.sendRedirect("/UserManagement/servererror");
-                     
-                 }
-             }
-                break;
-
                 
             case "/servererror":
                 serverError(request,response);
@@ -544,54 +532,7 @@ public class ControllerServlet extends HttpServlet {
         }
         
     }
-    
-    /**
-     * Renders list of all user profiles that match the search key
-     * Function called after generate report function is called in user page
-     * Allows admin to view profile of other users as well
-     * If the user is not admin, Allows to view the page only if the logged in user and requested user profile are of same user.
-     * Redirects to access denied page otherwise
-     * 
-     * 
-     * @param request
-     * @param response
-     * @throws ClassNotFoundException
-     * @throws SQLException
-     * @throws ServletException
-     * @throws IOException 
-     */
-    private void getSearch(HttpServletRequest request, HttpServletResponse response) throws ClassNotFoundException, SQLException, ServletException, IOException{
-        HttpSession session = request.getSession();
-        String key = request.getParameter("searchKey");
-        
-        
-        String userName = null;
-        Cookie[] cookies = request.getCookies();
-        if(cookies !=null){
-        for(Cookie cookie : cookies){
-                if(cookie.getName().equals("user")) userName = cookie.getValue();
-        }
-        }
-        if(session.getAttribute("user") == null){
-            response.sendRedirect("/UserManagement/signin");
-        }
-        else if (!this.userDAO.checkAdmin(userName)){
-            response.sendRedirect("/UserManagement/accessdenied");
-        }
-        
-        else{
-            List<User> listUser = this.userDAO.search(key);
-            request.setAttribute("listUser", listUser);
-            request.setAttribute("currentUser", userName);
-            RequestDispatcher dispatcher = request.getRequestDispatcher("users.jsp");
-            dispatcher.forward(request, response);
-        }
-        
-    }
-    
-    
-    
-    
+   
     /**
      *Renders create user page
      * Only allows access to admin
@@ -827,7 +768,7 @@ public class ControllerServlet extends HttpServlet {
             
                 String enc_password = encryptPassword(password);
                 User newUser = new User(fullName, username, email, enc_password, created_date);
-                this.userDAO.createUser(newUser);  
+                this.userDAO.createUserClient(newUser);  
                 
                 HttpSession session = request.getSession();
                 User currentUser = this.userDAO.getUserbyEmail(email);

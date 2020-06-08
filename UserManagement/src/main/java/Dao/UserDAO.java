@@ -113,7 +113,7 @@ public class UserDAO {
      * @throws ClassNotFoundException
      * @throws SQLException 
      */
-    public void createUser(User newUser) throws ClassNotFoundException, SQLException{
+    public void createUserClient(User newUser) throws ClassNotFoundException, SQLException{
         connect();
         String sql = "INSERT INTO users (user_id, full_name, username, user_email, user_password, created_date) VALUES (?, ?, ?, ?, ?, ?)";
         PreparedStatement statement;
@@ -652,42 +652,6 @@ public class UserDAO {
         PreparedStatement statement = this.con.prepareStatement(sql);
             statement.setString(1, startDate);
             statement.setString(2, endDate);
-         
-        ResultSet rs = statement.executeQuery();
-            
-            while (rs.next()) {
-                int user_id = rs.getInt("user_id");
-                String full_name = rs.getString("full_name");
-                String username = rs.getString("username");
-                String user_email = rs.getString("user_email");
-                String user_status = rs.getString("user_status");
-                String created_date = rs.getString("created_date");
-                String user_role = rs.getString("user_role");
-
-                User user = new User(user_id, full_name, username, user_email, user_status, created_date, user_role);
-                listUser.add(user);
-            }
-            statement.close();
-            rs.close();
-            this.con.close();
-        return listUser;
-        
-    }
-    
-    /**
-     * Queries the database and returns users that have name or username like the search key
-     * @param key
-     * @return
-     * @throws SQLException
-     * @throws ClassNotFoundException 
-     */
-    public List<User> search(String key) throws SQLException, ClassNotFoundException{
-        List<User> listUser = new ArrayList<>();
-        connect();
-        String sql = "SELECT * FROM users WHERE full_name LIKE ? OR username LIKE ? ESCAPE '!'";
-        PreparedStatement statement = this.con.prepareStatement(sql);
-            statement.setString(1,  "%" + key + "%");
-            statement.setString(2,  "%" + key + "%");
          
         ResultSet rs = statement.executeQuery();
             

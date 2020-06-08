@@ -15,6 +15,8 @@
 <style><%@include file="css/dashboard.css"%></style>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.datatbales.net/1.10.19/css/dataTables.bootstrap4.min.css">
 <style>
 html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 input[type=text] {
@@ -32,6 +34,11 @@ input[type=text] {
 
 input[type=text]:focus {
   width: 80%;}
+.dataTables_filter{
+  margin-left: 71%;}
+.center{
+  text-align: center;
+  }
 
 </style>
 <body class="w3-light-grey">
@@ -96,22 +103,17 @@ input[type=text]:focus {
               </form>
               <br>
               
-            <form action="/UserManagement/search">
-                <div class="row">
-                    <input type="text" name="searchKey" placeholder="Search by Username or Name">
-                  </div>
-            </form>
             </div>
       <div style="float: right;">
         <a href="/UserManagement/createuser" style="text-decoration:none;"><i class="fa fa-plus"></i>  <b>Add users</b></a>
       </div>
       </div>
     </header>
-      <div class="w3-container" style="max-height:750px; overflow: auto;">
+      <div class=""container mb-3 mt-3">
       
-        <table class="w3-table-all w3-hoverable">
+        <table class="table table-striped table-bordered mydatatable" style="width:100%">
           <thead>
-            <tr class="w3-light-grey">
+            <tr>
                 <tr>
                 <th>ID</th>
                 <th>Full Name</th>
@@ -122,21 +124,26 @@ input[type=text]:focus {
                 <th>Role</th>
                 <th>Actions</th>
           </thead>
-          <c:forEach var="user" items="${listUser}">
-                <tr>
-                    <td><c:out value="${user.user_id}" /></td>
-                    <td><c:out value="${user.full_name}" /></td>
-                    <td><c:out value="${user.username}" /></td>
-                    <td><c:out value="${user.user_email}" /></td>
-                    <td><c:out value="${user.user_status}" /></td>
-                    <td><c:out value="${user.created_date}" /></td>
-                    <td><c:out value="${user.user_role}" /></td>
-                    <td>
-                        <a href="/UserManagement/view?id=<c:out value='${user.user_id}' />"><i class="fa fa-eye"></i> View</a>
-                        <a href="/UserManagement/delete?id=<c:out value='${user.user_id}' />" style="padding-left: 20px;"><i class="fa fa-trash"> Delete</i></a>         
-                    </td>
-                </tr>
-            </c:forEach>
+          <tbody>
+            <c:forEach var="user" items="${listUser}">
+                  <tr>
+                      <td><c:out value="${user.user_id}" /></td>
+                      <td><c:out value="${user.full_name}" /></td>
+                      <td><c:out value="${user.username}" /></td>
+                      <td><c:out value="${user.user_email}" /></td>
+                      <td><c:out value="${user.user_status}" /></td>
+                      <td><c:out value="${user.created_date}" /></td>
+                      <td><c:out value="${user.user_role}" /></td>
+                      <td>
+                          <a href="/UserManagement/view?id=<c:out value='${user.user_id}' />"><i class="fa fa-eye"></i> View</a>
+                          <a href="/UserManagement/delete?id=<c:out value='${user.user_id}' />" style="padding-left: 20px;"><i class="fa fa-trash"> Delete</i></a>         
+                      </td>
+                  </tr>
+             </c:forEach>
+          </tbody>
+          <tfoot>
+
+          </tfoot>
         </table>
       </div>
     <!-- Footer -->
@@ -171,6 +178,17 @@ function w3_close() {
   mySidebar.style.display = "none";
   overlayBg.style.display = "none";
 }
+</script>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+
+<script>
+    $('.mydatatable').DataTable();
 </script>
 
 </body>

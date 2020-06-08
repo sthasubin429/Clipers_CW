@@ -73,7 +73,7 @@ public class CreateUserTest {
             User testUser = new User(full_name, username, user_email, user_password, created_date);
             
             //creates new user
-            userDAO.createUser(testUser);
+            userDAO.createUserClient(testUser);
                 
             User user = userDAO.getUserbyUsername("createusertest");
             

@@ -45,7 +45,7 @@ public class DeleteUserTest {
             String created_date = "2020-06-07";
             User testUser = new User(full_name, username, user_email, user_password, created_date);
             
-            userDAO.createUser(testUser);
+            userDAO.createUserClient(testUser);
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(DeleteUserTest.class.getName()).log(Level.SEVERE, null, ex);
         }

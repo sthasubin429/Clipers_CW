@@ -47,7 +47,7 @@ public class ChangePasswordTest {
             String created_date = "2020-06-07";
             User testUser = new User(full_name, username, user_email, user_password, created_date);
             
-            userDAO.createUser(testUser);
+            userDAO.createUserClient(testUser);
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(ChangePasswordTest.class.getName()).log(Level.SEVERE, null, ex);
         }
